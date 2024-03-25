@@ -19,7 +19,7 @@ export const handle: Handle = async ({ resolve, event }) => {
 		!authToken &&
 		(url.pathname.startsWith('/api/users') || url.pathname.startsWith('/api/auth/logout'))
 	) {
-		throw error(401, 'You are not logged in. Please provide a token to gain access.');
+		throw error(401, 'Akses kamu ditolak. Silahkan masuk terlebih dahulu.');
 	}
 
 	try {
@@ -27,14 +27,14 @@ export const handle: Handle = async ({ resolve, event }) => {
 			const { sub } = await verifyJWT<{ sub: string }>(authToken);
 			const user = await prisma.user.findUnique({ where: { id: parseInt(sub) } }); // Convert sub to a number
 			if (!user) {
-				throw error(401, 'User belonging to this token no longer exists');
+				throw error(401, 'Token sudah tidak ada lagi');
 			}
 
 			// locals.user = user;
 		}
 	} catch (err: any) {
 		if (url.pathname.startsWith('/api')) {
-			throw error(401, "Token is invalid or user doesn't exists");
+			throw error(401, "Token tidak valid atau pengguna tidak ada");
 		}
 	}
 
