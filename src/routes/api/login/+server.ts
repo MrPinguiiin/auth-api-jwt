@@ -1,7 +1,7 @@
 import { LoginUserSchema, type LoginUserInput } from '$lib/validations/user.schema.js';
 import { json } from '@sveltejs/kit';
 import { ZodError } from 'zod';
-import  { prisma } from '$lib/server/prisma';
+import { prisma } from '$lib/server/prisma';
 import bcrypt from 'bcryptjs';
 import { signJWT } from '$lib/server/token.js';
 import { JWT_EXPIRES_IN } from '$env/static/private';
@@ -18,19 +18,23 @@ export async function POST({ request, cookies }) {
 			}
 		});
 
+
 		if (!user || !(await bcrypt.compare(data.password, user.password))) {
 			return json({ message: 'Email atau Password salah!' }, { status: 401 });
 		}
 
 		const dataUser: { id: string; name: string; email: string; role: string } = {
+
 			id: user.id.toString(),
 			name: user.name,
 			email: user.email,
 			role: user.role.name.toLocaleLowerCase()
 		};
 
-		const accessToken = await signJWT({  dataUser }, { exp: `${JWT_EXPIRES_IN}m` });
+		// const accessToken = await signJWT({  dataUser }, { exp: `${JWT_EXPIRES_IN}m` });
 
+		const accessToken = await signJWT({ data: dataUser }, { exp: `${JWT_EXPIRES_IN}m` });
+		
 		const tokenMaxAge = parseInt(JWT_EXPIRES_IN) * 60;
 
 		const cookieOptions = {
