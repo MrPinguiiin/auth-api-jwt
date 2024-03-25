@@ -1,7 +1,7 @@
 import { JWT_SECRET_KEY } from '$env/static/private';
 import { SignJWT, jwtVerify } from 'jose';
 
-export const signJWT = async (payload: { sub: string }, options: { exp: string }) => {
+export const signJWT = async (payload: { sub: any }, options: { exp: string }) => {
 	try {
 		const secret = new TextEncoder().encode(JWT_SECRET_KEY);
 		const alg = 'HS256';

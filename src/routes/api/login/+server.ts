@@ -4,7 +4,7 @@ import { ZodError } from 'zod';
 import { prisma } from '$lib/server/prisma';
 import bcrypt from 'bcryptjs';
 import { signJWT } from '$lib/server/token.js';
-import { JWT_EXPIRES_IN } from '$env/static/private';
+import { JWT_EXPIRES_IN, JWT_SECRET_KEY } from '$env/static/private';
 
 export async function POST({ request, cookies }) {
 	try {
@@ -33,7 +33,7 @@ export async function POST({ request, cookies }) {
 
 		// const accessToken = await signJWT({  dataUser }, { exp: `${JWT_EXPIRES_IN}m` });
 
-		const accessToken = await signJWT({ data: dataUser }, { exp: `${JWT_EXPIRES_IN}m` });
+		const accessToken = await signJWT({ sub: dataUser }, { exp: `${JWT_EXPIRES_IN}m` });
 		
 		const tokenMaxAge = parseInt(JWT_EXPIRES_IN) * 60;
 
