@@ -1,8 +1,21 @@
 import { json } from '@sveltejs/kit';
 import { prisma } from '$lib/server/prisma';
+import type { RequestEvent } from './$types.js';
 
-export async function GET({ url }) {
+export async function GET({url}) {
 	try {
+
+		// const cookies = event.cookies;
+
+		// if (!cookies.get('accessToken')) {
+		// 	const error_response = {
+		// 		status: 'gagal',
+		// 		message: 'Tidak ada token'
+		// 	};
+		// 	return json(error_response, { status: 401 });
+		// }
+
+		// const url = event.url;
 
 		const pageQueryParam = url.searchParams.get('page');
 		const limitQueryParam = url.searchParams.get('limit');

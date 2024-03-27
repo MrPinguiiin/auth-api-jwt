@@ -11,7 +11,7 @@
             secure: process.env.NODE_ENV !== 'development'
         };
 
-        cookies.delete('token', cookieOptions);
+        cookies.delete('accessToken', cookieOptions);
         cookies.delete('logged-in', cookieOptions);
 
         return json({ status: 'Berhasil keluar' });
